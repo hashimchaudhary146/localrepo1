@@ -1,0 +1,30 @@
+pipeline {
+    agent any
+    tools {nodejs "Nodejs16"}
+    environment{
+   NODE_ENV='production'
+}
+    stages {
+        stage('Check out github') {
+            steps {
+                git 'https://github.com/contentful/the-example-app.nodejs.git'
+                
+            }
+        }
+        stage("build")  {
+        steps{
+            sh 'npm install'
+        }            
+        
+        }
+           
+      stage("Save to Artifactory")  {
+        steps{
+            archiveArtifacts artifacts: '**', followSymlinks: false
+        }            
+        
+        }
+      
+    }
+    
+}
